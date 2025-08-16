@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Link Hub</title>
+  <meta name="description" content="ссылки AlexTex" />
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --card:#14151a;
+      --border:#23242b;
+      --text:#f5f7fb;
+      --muted:#a4a8b3;
+      --accent:#ffffff;
+      --radius:16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html,body { height: 100%; }
+    body {
+      margin:0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap {
+      min-height: 100%;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: transparent;
+    }
+    header {
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding: 14px 8px 22px;
+      justify-content:center;
+      text-align:center;
+    }
+    .logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      background: #111218;
+      border:1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .logo img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover;
+      border-radius: 16px;
+    }
+    h1 {
+      margin:0;
+      font-size: 22px;
+      letter-spacing: .5px;
+      font-weight: 700;
+    }
+    p.sub {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .list {
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .tile {
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      text-decoration:none;
+      color: var(--text);
+      padding: 12px;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      will-change: transform, box-shadow;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease;
+    }
+    .tile:hover, .tile:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.45);
+      outline: none;
+    }
+    .tile:active { transform: translateY(0); }
+    .icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: #1b1c24;
+      display:grid; place-items:center;
+      flex: 0 0 44px;
+      overflow:hidden;
+      border:1px solid var(--border);
+    }
+    .icon img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display:block;
+    }
+    .avatar {
+      width:100%; height:100%;
+      display:grid; place-items:center;
+      font-weight:700; font-size:15px;
+      color:#fff; background:#2a2c35;
+    }
+    .title { font-weight:600; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .textcol { display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .title, .muted { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    footer {
+      text-align:center; color:var(--muted); font-size:12px; margin-top:16px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tile { transition: none; }
+      .tile:hover,.tile:focus-visible { transform:none; box-shadow: var(--shadow); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <header>
+        <div class="logo" aria-hidden="true">
+          <img src="./images/alextex.jpg" alt="AlexTex Logo" />
+        </div>
+      </header>
+
+      <section class="list" id="list"></section>
+      <footer>AlexTex</footer>
+    </main>
+  </div>
+
+  <script>
+    // ======== CONFIGURE YOUR LINKS HERE ========
+    // image: optional; if omitted or fails to load, a letter avatar is shown.
+    // You can use absolute URLs to images (PNG/JPG/SVG) or a data: URI.
+    const LINKS = [
+      { title: "Wildberries", url: "https://www.wildberries.ru/seller/368775", image: "./images/wb.webp" },
+      { title: "OZON", url: "https://www.ozon.ru/seller/alex-textile-alex-yvn-257660/?miniapp=seller_257660", image: "./images/ozon.png" },
+      { title: "Lamoda", url: "https://www.lamoda.ru/b/35120/brand-alex/?page=1", image: "./images/lamoda.png" },
+      { title: "Детский мир", url: "https://www.detmir.ru/catalog/index/name/sortforbrand/brand/73644/", image: "./images/detmir.png" },
+      { title: "Яндекс Маркет", url: "https://market.yandex.ru/business--alex-textile/8626531?utm_medium=sharing", image: "./images/yandex.png" },
+    ];
+
+    function createTile(item){
+      const a = document.createElement('a');
+      a.className = 'tile';
+      a.href = item.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+
+      const icon = document.createElement('div');
+      icon.className = 'icon';
+
+      if (item.image) {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.onerror = () => {
+          icon.innerHTML = '<div class="avatar">'+ (item.title?.trim()?.[0] || "•") +'</div>';
+        };
+        icon.appendChild(img);
+      } else {
+        icon.innerHTML = '<div class="avatar">'+ (item.title?.trim()?.[0] || "•") +'</div>';
+      }
+
+      const textcol = document.createElement('div');
+      textcol.className = 'textcol';
+      const title = document.createElement('div');
+      title.className = 'title';
+      title.textContent = item.title;
+      const url = document.createElement('div');
+      url.className = 'muted';
+      url.textContent = new URL(item.url).host;
+      textcol.appendChild(title);
+      textcol.appendChild(url);
+
+      a.appendChild(icon);
+      a.appendChild(textcol);
+      return a;
+    }
+
+    const list = document.getElementById('list');
+    LINKS.forEach(x => list.appendChild(createTile(x)));
+  </script>
+</body>
+</html>
